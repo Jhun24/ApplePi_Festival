@@ -9,10 +9,66 @@ class Game{
         this.bujang_fire_total = 0;
     }
 
-    move(user_token){
+    move(user_token , part){
+        async.waterfall([
+            function(cb){
+                if((part == '생산') || (part == '인사') || (part == '영업')){
+                    cb(null);
+                }
+                else{
+                    cb(true , 403 , "접근 부서가 잘못되었습니다");
+                }
+            },
+            function(cb){
+                User.find({user_token:user_token},(err,model)=>{
+                    if(err) throw err;
+                    if(model.length == 0){
+                        cb(true , 401 , "Unauthorized Token");      
+                    }
+                    else{
+                        cb(null , model[0]);
+                    }
+                });
+            },
+            function(data ,cb){
+                if(data.game_data.department == '없음'){
+                    cb(null , 0);
+                }
+                else if(data.now_room == data.game_data.department){
+                    cb(null , 0);
+                }
+                else if (data.now_room != data.game_data.department){
+                    cb(null , 1);
+                }
+                else{
+                    cb(true , 500 , "Move Function Error");
+                }
+            },
+            function(code , cb){
+                if(code == 0){
+                    User.update({user_token:user_token},{$set:{now_room:part}},(err,model)=>{
+                        if(err) throw err;
+                        cb(null , 200 , "이동에 성공하셨습니다");
+                    });
+                }
+                else{
+                    cb(true , 403 , "이동이 불가능합니다");
+                }
+            }
+        ],function(cb , status , data){
+            if(cb == true || cb == null){
+                res.send({
+                    status:status,
+                    message:data
+                });
+            }
+        });
+    }
+
+    move_check(user_token){
        async.waterfall([
            function(cb){
-               User.find({user_tokne:user_token},(err,model)=>{
+               User.find({user_token:user_token},(err,model)=>{
                     if(err) throw err;
                     if(model.length == 0){
                         cb(true , 401 , 'Unauthorized Token');
@@ -20,6 +76,9 @@ class Game{
                     else{
                         if(model[0].now_room == model[0].game_data.department){
                             cb(null , 200, "어느 부서로든 갈 수 있습니다");
+                        }
+                        else if(model[0].game_data.department == '없음'){
+                            cb(null , 200 , "어느 부서로든 갈 수 있습니다");
                         }
                         else{
                             cb(null , 200 , model[0].game_data.department+" 부서로 가야합니다");

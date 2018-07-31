@@ -46,4 +46,15 @@ function game(app , startGame){
             message:result_fire.message
         });
     });
+
+    app.post('/game/move/check',(req,res)=>{
+        let user_token = req.body.user_token;
+
+        let result_move_check = startGame.move_check(user_token);
+
+        res.send({
+            status:result_move_check.status,
+            message:result_move_check.message
+        });
+    });
 }
