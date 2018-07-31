@@ -57,4 +57,16 @@ function game(app , startGame){
             message:result_move_check.message
         });
     });
+
+    app.move('/game/move',(req,res)=>{
+        let user_token = req.body.user_token;
+        let move_department = req.body.move_department;
+
+        let result_move = startGame.move(user_token,move_department);
+        
+        res.send({
+            status:result_move.status,
+            message:result_move.message
+        });
+    });
 }
