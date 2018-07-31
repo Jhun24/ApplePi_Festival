@@ -4,6 +4,11 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
  
+let Game = require('./func/game').Game;
+let Logger = require('./func/color').Logger;
+
+let startGame = new Game();
+
 
 var app = express();
 
@@ -17,6 +22,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+require('./routes/game')(app , startGame);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
