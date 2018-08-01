@@ -32,8 +32,17 @@ let Admin = new mongoose.Schema({
     password : String,    
 });
 
+let Log = new mongoose.Schema({
+    log_token : String,
+    title : String,
+    time : String,
+    content : String
+});
+
+
 let adminModel = mongoose.model('adminModel',Admin);
 let userModel = mongoose.model('userModel',User);
+let logModel = mongoose.model('logModel',Log);
 
 let setAdmin = new adminModel({
     token: random_string.generate(),
@@ -51,3 +60,4 @@ setAdmin.save((err,model)=>{
 
 exports.User = userModel;
 exports.Admin = adminModel;
+exports.Log = logModel;
