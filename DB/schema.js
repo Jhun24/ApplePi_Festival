@@ -20,7 +20,9 @@ let User = new mongoose.Schema({
         win_condition:Array,
         lose_condition:String,
         uniqueness:String,
-        rank:Number
+        rank:Number,
+        profile:String,
+        card:String
     },
     die:Boolean,
     now_room : String,

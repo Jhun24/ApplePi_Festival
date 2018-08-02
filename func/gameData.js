@@ -13,6 +13,8 @@ let data = {
             '아들 김세자의 정체를 앎',
             '부서없음'
         ],
+        card:'/img/card/kim_sajang_card.png',
+        profile:'/img/profile/kim_sajang.png',
         rank:1
     },
     '이상무':{
@@ -25,6 +27,8 @@ let data = {
             '본인이 직접 해고해서 1억 2천만원 이상 감축',
             '목표 미달성시 해고'
         ],
+        card:'/img/card/lee_sangmu_card.png',
+        profile:'/img/profile/lee_sangmu.png',
         rank:2
     },
     '박부장':{
@@ -39,6 +43,8 @@ let data = {
             '본인이 직접 해고해서 7천만원 이상 감축',
             '목표 미달성시 해고'
         ],
+        card:'/img/card/park_bujang_card.png',
+        profile:'/img/profile/park_bujang.png',
         rank:3
     },
     '심차장':{
@@ -48,6 +54,8 @@ let data = {
         win_condition:['박부장의 패배'],
         lose_condition:'박부장의 승리',
         uniqueness:['감축 목표 없음'],
+        card:'/img/card/shim_chajang_card.png',
+        profile:'/img/profile/shim_chajang.png',
         rank:4
     },
     '김세자':{
@@ -61,6 +69,8 @@ let data = {
             '김세자를 해고하는 플레이어는 김세자 대신 해고됨',
             '아버지 김사장의 정체를 앎'
         ],
+        card:'/img/card/kim_seja_card.png',
+        profile:'/img/profile/kim_seja.png',
         rank:5,
     },
     '이몽룡':{
@@ -73,6 +83,8 @@ let data = {
             '노동조합',
             '성춘향과 커플, 서로의 정체를 앎'
         ],
+        card:'/img/card/lee_mongryong_card.png',
+        profile:'/img/profile/lee_mongryong.png',
         rank:5,
     },
     '성춘향':{
@@ -85,6 +97,8 @@ let data = {
             '노동조합',
             '이몽룡과 커플, 서로의 정체를 앎'
         ],
+        card:'/img/card/chun_hyang_card.png',
+        profile:'/img/profile/chun_hyang.png',
         rank:5,
     },
     '홍길동':{
@@ -96,6 +110,8 @@ let data = {
         uniqueness:[
             '노동조합',
         ],
+        card:'/img/card/hong_gildong_card.png',
+        profile:'/img/profile/hong_gildong.png',
         rank:5,
     },
     '김선달':{
@@ -108,6 +124,8 @@ let data = {
             '노동조합',
             '엿보기 시 자기 정채를 속일 수 있음',
         ],
+        card:'/img/card/kim_sundal_card.png',
+        profile:'/img/profile/kim_sundal.png',
         rank:5,
     },
     '심청':{
@@ -120,6 +138,8 @@ let data = {
             '심차장의 조카',
             '해고됐어도 심차장이 승리하면 복직됨'
         ],
+        card:'/img/card/card_insa.png',
+        profile:'/img/profile/shim_chung.png',
         rank:5,
     },
     '인턴':{
@@ -132,6 +152,8 @@ let data = {
             '부서 없음',
             '엿보기 2명 가능'
         ],
+        card:'/img/card/intern_card.png',
+        profile:'/img/profile/intern.png',
         rank:5,
     }
     
