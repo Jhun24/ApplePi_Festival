@@ -20,9 +20,10 @@ function admin(app , startGame){
             }
             else{
                 req.session.token = model[0].admin_token;
-                res.send({
-                    status:200
-                });
+                // res.send({
+                //     status:200,
+                // })
+                res.redirect('/admin/main');
             }
         });
     });

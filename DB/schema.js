@@ -48,7 +48,7 @@ let userModel = mongoose.model('userModel',User);
 let logModel = mongoose.model('logModel',Log);
 
 let setAdmin = new adminModel({
-    token: random_string.generate(),
+    admin_token: random_string.generate(),
     id:'ApplePi_is_best',
     password:'edcan'
 });

@@ -16,11 +16,11 @@ login.addEventListener('click',()=>{
         },
         success:function (data) {
             console.log(data)
-            if(data.status == 200){
-                alert("Success");
+            if(data.status == 401){
+                alert("관리자가 아닙니다");
             }
             else{
-                alert("관리자가 아닙니다");
+                location.href = '/admin/main'
             }
         },
         error:function (err) {

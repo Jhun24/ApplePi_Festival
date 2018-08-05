@@ -10,11 +10,39 @@
 
   background-color:rgb(184,101,99);
 
-  .flex-align-center;
+  .flex-center;
 }
 
-.header > h4{
+.header > .header-box{
+  width:90%;
+  height:100%;
+
+  .flex-align-between;
+}
+
+.header > .header-box > h4{
   font-size:24px;
-  font-weight:800;
+  font-weight:600;
   color:#fff;
+}
+
+.header > .header-box > .menu-box{
+  width:400px;
+  height:100%;
+
+  .flex-align-between;
+}
+
+.header > .header-box > .menu-box > .menu{
+  width:20%;
+  height:60%;
+
+  .flex-center;
+
+  border:1px solid #fff;
+  border-radius: 5px;
+
+  color:#fff;
+  font-weight:100;
+  font-size:14px;
 }
