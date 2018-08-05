@@ -19,7 +19,7 @@ let User = new mongoose.Schema({
         department:String,
         win_condition:Array,
         lose_condition:String,
-        uniqueness:String,
+        uniqueness:Array,
         rank:Number,
         profile:String,
         card:String
