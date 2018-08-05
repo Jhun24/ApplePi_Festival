@@ -95,7 +95,7 @@ function admin(app , startGame){
     app.post('/admin/set/user',(req,res)=>{
         "use strict";
         let admin_token = req.session.token;
-        let user_token = req.body.user_token
+        let user_name = req.body.user_name;
         let game_name = req.body.name;
         
         async.waterfall([
@@ -126,7 +126,7 @@ function admin(app , startGame){
                 });
             },
             function (cb) {
-                User.update({user_token:user_token},{$set:{
+                User.update({user_name:user_name},{$set:{
                     game_data:{
                         name:game_name,
                         pay:GameData[game_name].pay,

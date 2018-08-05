@@ -35,6 +35,7 @@ require('./routes/game')(app , startGame);
 require('./routes/admin')(app, startGame);
 require('./routes/watch')(app , startGame);
 require('./routes/route')(app);
+require('./routes/peek')(app)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
