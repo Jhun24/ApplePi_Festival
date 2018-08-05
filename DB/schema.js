@@ -60,6 +60,30 @@ setAdmin.save((err,model)=>{
     Logger.info('Admin Password : edcan');
 });
 
+userModel.find({},(err,model)=>{
+    "use strict";
+    if(err) throw err;
+    if(model.length == 0){
+        for(let i = 0; i < 11; i++){
+            let new_user_token = random_string.generate();
+            let die = false;
+            let room = "없음";
+
+            let setStart = new userModel({
+                user_token:new_user_token,
+                die:die,
+                now_room:room
+            });
+
+            setStart.save((err , model)=>{
+                "use strict";
+                if(err) throw err;
+                Logger.info((i+1)+"Set Success");
+            });
+        }
+    }
+});
+
 exports.User = userModel;
 exports.Admin = adminModel;
 exports.Log = logModel;
