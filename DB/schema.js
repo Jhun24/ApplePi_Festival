@@ -49,7 +49,7 @@ let logModel = mongoose.model('logModel',Log);
 
 let setAdmin = new adminModel({
     admin_token: random_string.generate(),
-    id:'ApplePi_is_best',
+    id:'ApplePi',
     password:'edcan'
 });
 
@@ -61,7 +61,7 @@ adminModel.find({},(err,model)=>{
             if(err) throw err;
 
             Logger.info('Set Admin Success');
-            Logger.info('Admin ID : ApplePi_is_best');
+            Logger.info('Admin ID : ApplePi');
             Logger.info('Admin Password : edcan');
         });
     }
