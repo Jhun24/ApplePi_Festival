@@ -4,7 +4,7 @@
 
 # Schema
 
-[/schema]('./docs/schema.md')
+[/schema](./docs/schema.md)
 
     스키마가 정리되어있따
     자세한 설명은 들가서 봐라
