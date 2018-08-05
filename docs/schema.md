@@ -63,3 +63,37 @@
 >> card : String
 
     유저 카드 이미지 URL을 의미한다
+    
+# Admin 
+
+> admin_token : String
+
+    어드민 토큰을 의미한다
+    권한은 좇도 없음
+     
+> id : String
+
+    어드민 아이디를 의미한다
+    
+> password : String
+
+    어드민 비밀번호를 의미한다
+    
+# Log
+
+> log_token : String
+
+    로그 토큰이다
+    참고로 쓸 일 없다
+
+> title : String
+
+    로그 제목
+
+> time : String
+
+    로그 찍힌 시간
+
+> content : String
+
+    로그 내용 
