@@ -6,6 +6,7 @@ var logger = require('morgan');
  
 let Game = require('./func/game').Game;
 let Logger = require('./func/color').Logger;
+let session = require('express-session');
 
 let startGame = new Game();
 
@@ -14,7 +15,9 @@ var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+app.set('view engine', 'html')
+app.set('views', 'views')
+app.engine('html', require('ejs').renderFile);
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -22,9 +25,16 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(session({
+    secret:'@#@$MYSIGN#@$#$',
+    resave: false,
+    saveUninitialized:true
+}));
+
 require('./routes/game')(app , startGame);
 require('./routes/admin')(app, startGame);
 require('./routes/watch')(app , startGame);
+require('./routes/route')(app);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

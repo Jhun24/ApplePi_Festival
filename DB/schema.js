@@ -24,6 +24,7 @@ let User = new mongoose.Schema({
         profile:String,
         card:String
     },
+    setting:Boolean,
     die:Boolean,
     now_room : String,
 });
@@ -52,12 +53,18 @@ let setAdmin = new adminModel({
     password:'edcan'
 });
 
-setAdmin.save((err,model)=>{
+adminModel.find({},(err,model)=>{
+    "use strict";
     if(err) throw err;
+    if(model.length == 0){
+        setAdmin.save((err,model)=>{
+            if(err) throw err;
 
-    Logger.info('Set Admin Success');
-    Logger.info('Admin ID : ApplePi_is_best');
-    Logger.info('Admin Password : edcan');
+            Logger.info('Set Admin Success');
+            Logger.info('Admin ID : ApplePi_is_best');
+            Logger.info('Admin Password : edcan');
+        });
+    }
 });
 
 userModel.find({},(err,model)=>{
@@ -72,7 +79,8 @@ userModel.find({},(err,model)=>{
             let setStart = new userModel({
                 user_token:new_user_token,
                 die:die,
-                now_room:room
+                now_room:room,
+                setting:false,
             });
 
             setStart.save((err , model)=>{

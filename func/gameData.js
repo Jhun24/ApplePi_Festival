@@ -158,3 +158,5 @@ let data = {
     }
     
 }
+
+exports.GameData = data;
