@@ -42,11 +42,15 @@ let Log = new mongoose.Schema({
     content : String
 });
 
+let Peek = new mongoose.Schema({
+    card_url:String,
+})
+
 let test_arr = [
     '1','2','3','4','5','6','7','8','9','10','11'
 ];
 
-
+let peekModel = mongoose.model('peekModel',Peek);
 let adminModel = mongoose.model('adminModel',Admin);
 let userModel = mongoose.model('userModel',User);
 let logModel = mongoose.model('logModel',Log);
@@ -100,3 +104,4 @@ userModel.find({},(err,model)=>{
 exports.User = userModel;
 exports.Admin = adminModel;
 exports.Log = logModel;
+exports.Peek = peekModel;

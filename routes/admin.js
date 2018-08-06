@@ -71,7 +71,7 @@ function admin(app , startGame){
         })
     });
 
-    app.get('/admin/get/token/list/:token',(req,res)=>{
+    app.get('/admin/get/token/list',(req,res)=>{
         "use strict";
         let admin_token = req.session.token;
 
@@ -96,7 +96,7 @@ function admin(app , startGame){
         "use strict";
         let admin_token = req.session.token;
         let user_name = req.body.user_name;
-        let game_name = req.body.name;
+        let game_name = req.body.game_name;
         
         async.waterfall([
             function (cb) {
@@ -107,6 +107,17 @@ function admin(app , startGame){
                     }
                     else{
                         cb(null);
+                    }
+                });
+            },
+            function (cb) {
+                User.find({user_name:user_name , setting:true},(err,model)=>{
+                    if(err) throw err;
+                    if(model.length == 0){
+                        cb(null);
+                    }
+                    else{
+                        cb(true , 401 , "Already Exist");
                     }
                 });
             },
