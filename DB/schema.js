@@ -42,6 +42,10 @@ let Log = new mongoose.Schema({
     content : String
 });
 
+let test_arr = [
+    '1','2','3','4','5','6','7','8','9','10','11'
+];
+
 
 let adminModel = mongoose.model('adminModel',Admin);
 let userModel = mongoose.model('userModel',User);
@@ -78,6 +82,7 @@ userModel.find({},(err,model)=>{
 
             let setStart = new userModel({
                 user_token:new_user_token,
+                user_name:test_arr[i],
                 die:die,
                 now_room:room,
                 setting:false,
