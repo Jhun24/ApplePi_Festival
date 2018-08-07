@@ -2,6 +2,8 @@ let mongoose = require('mongoose');
 let Logger = require('../func/color').Logger;
 let random_string = require('randomstring');
 
+let User_Array = require('../func/user').User_Array;
+
 mongoose.connect('mongodb://localhost:27017/applepi') ;
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -44,11 +46,7 @@ let Log = new mongoose.Schema({
 
 let Peek = new mongoose.Schema({
     card_url:String,
-})
-
-let test_arr = [
-    '1','2','3','4','5','6','7','8','9','10','11'
-];
+});
 
 let peekModel = mongoose.model('peekModel',Peek);
 let adminModel = mongoose.model('adminModel',Admin);
@@ -86,7 +84,7 @@ userModel.find({},(err,model)=>{
 
             let setStart = new userModel({
                 user_token:new_user_token,
-                user_name:test_arr[i],
+                user_name:User_Array[i],
                 die:die,
                 now_room:room,
                 setting:false,
