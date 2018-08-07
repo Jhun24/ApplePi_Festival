@@ -134,8 +134,11 @@ class Game{
                         cb(null , 200 , "이동에 성공하셨습니다");
                     });
                 }
+                else if(code == 1){
+                    cb(null , 200 , "이동이 불가능합니다")
+                }
                 else{
-                    cb(true , 403 , "이동이 불가능합니다");
+                    cb(true , 500 , "Move Function Error");
                 }
             }
         ],function(cb , status , data){

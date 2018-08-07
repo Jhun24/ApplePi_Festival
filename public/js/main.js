@@ -19,6 +19,9 @@ const popup = document.getElementById('sundal-popup');
 const select_list = document.getElementById('sources');
 const popup_card = document.getElementsByClassName('popup-card');
 
+const total_number = document.getElementById('total-number');
+const total_bujang = document.getElementById('total-bujang');
+const total_sangmu = document.getElementById('total-sangmu');
 
 let intervalFunction;
 let user_name_array = new Array();
@@ -40,14 +43,28 @@ user_list.addEventListener('click',()=>{
     peek_box.style.display = 'none';
     roulette_box.style.display = 'none';
     main_box.style.display = 'none';
-
+    $.ajax({
+        method:'GET',
+        url:'/watch/show/total',
+        success:function (data) {
+            if(data.status == 200){
+                total_number.innerHTML = "전채 감축액  : "+ data.fire_total;
+                total_bujang.innerHTML = "박부장 감축액 : "+data.bujang_fire_total;
+                total_sangmu.innerHTML = "이상무 감축액 : "+data.sanmu_fire_total;
+            }
+        },
+        error:function (err) {
+            console.log(err);
+        }
+    });
     $.ajax({
         method:'GET',
         url:'/admin/data',
         success:function (data) {
             if(data.status == 200){
                 let user_list_data = data.data;
-                let input_html = '<div class="user-list-box-layout">';
+                let input_html = user_list_box.innerHTML;
+                input_html += '<div class="user-list-box-layout">';
 
                 for(let o = 0; o<user_list_data.length; o++){
                     if(user_list_data[o].setting == true){
@@ -256,11 +273,11 @@ function timer(){
         second = 59;
         minute--;
     }
-   
-    
+
+
     if(minute == -1){
         document.getElementById('minite').innerHTML = '00';
-        document.getElementById('second').innerHTML = '00';    
+        document.getElementById('second').innerHTML = '00';
     }
     else if(second < 10){
         document.getElementById('minite').innerHTML = '0'+minute;
