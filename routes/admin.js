@@ -280,7 +280,7 @@ function admin(app , startGame){
                 Admin.find({admin_token:admin_token},(err,model)=>{
                     if(err) throw err;
                     if(model.length == 0){
-                        cb(true , 401 , "Unauthorized Token");
+                        cb(true , 401 , "Unauthorized Admin Token");
                     }
                     else{
                         cb(null);
@@ -291,10 +291,146 @@ function admin(app , startGame){
                 User.find({},(err,model)=>{
                     if(err) throw err;
                     if(model.length == 0){
-
+                        cb(true , 401 , "Unauthorized User Token");
+                    }
+                    else{
+                        cb(null , model);
                     }
                 });
+            },
+            function (user ,cb) {
+                let check_win_array = new Array();
+
+                for(let i = 0; i<user.length; i++){
+                    check_win_array[i] = new Object();
+                    check_win_array[i].user_name = user[i].user_name;
+                    check_win_array[i].game_name = user[i].game_data.name;
+                    check_win_array[i].profile = user[i].game_data.profile;
+                    check_win_array[i].card = user[i].game_data.card;
+
+                    let game_name = check_win_array.game_name;
+                    if((game_name == '인턴') && (game_name == '김선달') && (game_name == '홍길동') && (game_name == '성춘향') && (game_name == '이몽룡')){
+                        if(user[i].die == false){
+                            check_win_array[i].win = true;
+                        }
+                        else{
+                            check_win_array[i].win = false;
+                        }
+                    }
+                    else if(game_name == '김사장'){
+                        let alive_user = 0;
+                        for(let o = 0; o<user.length; o++){
+                            if(user[o].die == false){
+                                alive_user++;
+                            }
+                        }
+
+                        if(alive_user > 4){
+                            if(startGame.fire_total >= 220000000){
+                                check_win_array[i].win = true;
+                            }
+                            else{
+                                check_win_array[i].win = false;
+                            }
+                        }
+                        else{
+                            check_win_array[i].win = false;
+                        }
+                    }
+                    else if(game_name == '이상무'){
+                        if(user[i].die == false){
+                            if(startGame.sanmu_fire_total >= 120000000){
+                                check_win_array[i].win = true;
+                            }
+                            else{
+                                check_win_array[i].win = false;
+                            }
+                        }
+                        else{
+                            check_win_array[i].win = false;
+                        }
+                    }
+                    else if(game_name == '박부장'){
+                        if(user[i].die == false){
+                            if(startGame.sanmu_fire_total >= 70000000){
+                                check_win_array[i].win = true;
+                            }
+                            else{
+                                check_win_array[i].win = false;
+                            }
+                        }
+                        else{
+                            check_win_array[i].win = false;
+                        }
+                    }
+                    else if(game_name == '심차장'){
+                        for(let o = 0; o<user.length; o++){
+                            if(user[o].game_data.name == '박부장'){
+                                if(user[o].die == false && startGame.sanmu_fire_total >= 70000000){
+                                    check_win_array[i].win = false;
+                                }
+                                else{
+                                    check_win_array[i].win = true;
+                                }
+                            }
+                        }
+                    }
+                    else if(game_name == '김세자'){
+                        let alive_user = 0;
+                        for(let o = 0; o<user.length; o++){
+                            if(user[o].die == false){
+                                alive_user++;
+                            }
+                        }
+
+                        if(alive_user > 4){
+                            if(startGame.fire_total >= 220000000){
+                                check_win_array[i].win = true;
+                            }
+                            else{
+                                check_win_array[i].win = false;
+                            }
+                        }
+                        else{
+                            check_win_array[i].win = false;
+                        }
+                    }
+                    else if(game_name == '심청'){
+                        if(user[i].die == false){
+                            check_win_array[i].win = true;
+                        }
+                        else{
+                            for(let o = 0; o<user.length; o++){
+                                if(user[o].game_data.name == '박부장'){
+                                    if(user[o].die == false && startGame.sanmu_fire_total >= 70000000){
+                                        check_win_array[i].win = false;
+                                    }
+                                    else{
+                                        check_win_array[i].win = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else{
+                        cb(true , 500 , 'Something wrong');
+                    }
+                }
+                cb(null , 200 , check_win_array);
             }
-        ])
+        ],function (cb , status , data) {
+            if(cb == true){
+                res.send({
+                    status:status,
+                    message:data
+                });
+            }
+            else if(cb == false){
+                res.send({
+                    status:status,
+                    data:data
+                })
+            }
+        })
     });
 }

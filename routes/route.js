@@ -27,4 +27,21 @@ function route(app) {
             }
         });
     });
+
+    app.get('/admin/watch',(req,res)=>{
+        "use strict";
+        console.log(req.session.token);
+        Admin.find({admin_token:req.session.token},(err,model)=>{
+            if(err) throw err;
+            if(model.length == 0){
+                res.send({
+                    status:401,
+                    message:"Unauthorized Admin Token"
+                })
+            }
+            else{
+                res.render('watch.html');
+            }
+        });
+    });
 }
