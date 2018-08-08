@@ -48,7 +48,7 @@
 
     유저 패배조건을 의미한다
     
->> uniqueness : String
+>> uniqueness : Array
     
     유저 특이사항을 의미한다
     

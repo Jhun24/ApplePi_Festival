@@ -90,3 +90,62 @@
 
     status : 401
     message : Unauthorized Token
+    
+    
+# GET : /game/user/list/:token
+
+    게임 참여자 목록을 받아오는 쿼리입니다
+    
+> Require
+
+    token : 유저 토큰을 의미합니다
+    
+> Response : Success
+
+    status: 200
+    data : User_list Array
+    
+    EX :
+    data[0] = {
+        user_name : String,
+        user_token : String,
+        user_profile : String,
+    }
+    
+> Response : Fail
+
+    status : 401
+    message : Unauthorized Token
+    
+# GET : /game/room/member/:token
+
+    같은 방에 있는 참가자 목록을 받아오는 쿼리입니다
+    
+> Require
+
+    token : 유저 토큰을 의미합니다
+     
+> Response : Success
+
+    status : 200
+    data : User_list_Object
+    
+    EX : 
+    data : {
+        room_name : String
+        user_list:[
+        {
+            user_name : String
+            user_token : String
+        },
+        {
+            user_name : String
+            user_token : String
+        }]
+        
+> Response : Fail
+
+    status: 401
+    message : Unauthorized Token
+        
+    

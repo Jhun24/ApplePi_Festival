@@ -48,9 +48,15 @@ user_list.addEventListener('click',()=>{
         url:'/watch/show/total',
         success:function (data) {
             if(data.status == 200){
-                total_number.innerHTML = "전채 감축액  : "+ data.fire_total;
-                total_bujang.innerHTML = "박부장 감축액 : "+data.bujang_fire_total;
-                total_sangmu.innerHTML = "이상무 감축액 : "+data.sanmu_fire_total;
+                let total_html = '<div class="total">';
+
+                total_html+= '<h4> 전체 총 감축액 : '+data.fire_total+'</h4>';
+                total_html+= '<h4> 이상무 총 감축액 : '+data.sanmu_fire_total+'</h4>';
+                total_html+= '<h4> 박부장 총 감축액 : '+data.bujang_fire_total+'</h4>';
+
+                total_html+='</div>';
+
+                user_list_box.innerHTML = total_html;
             }
         },
         error:function (err) {
