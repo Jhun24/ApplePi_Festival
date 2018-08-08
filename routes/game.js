@@ -1,7 +1,7 @@
 module.exports = game;
 
 let { User } = require('../DB/schema');
-let async = require('async');
+let async = require('async');               
 let Logger = require('../func/color').Logger;
 
 function game(app , startGame){
@@ -306,6 +306,60 @@ function game(app , startGame){
                  });
              }
         });
+    });
+
+    app.get('/game/check/start/:token',(req,res)=>{
+        let user_token = req.params.token;
+
+        async.waterfall([
+            function(cb){
+                User.find({user_token:user_token},(err,model)=>{
+                    if(err) throw err;
+                    if(model.length == 0){
+                        cb(true , 401 , "Unauthorized Token");
+                    }
+                    else{
+                        cb(null);
+                    }
+                });
+            },
+            function(cb){
+                User.find({},(err,model)=>{
+                    if(err) throw err;
+                    cb(null , model);
+                });
+            },
+            function(user ,cb){
+                let check_user = 0;
+                for(let i = 0; i<user.length; i++){
+                    if(user[i].setting){
+                        check_user++;
+                    }
+                }
+                cb(null , check_user);
+            },
+            function(count , cb){
+                if(count == 11){
+                    cb(null , 200 , true);
+                }
+                else{
+                    cb(null , 200 , false);
+                }
+            }
+        ],function(cb , status , data){
+            if(cb == true){
+                res.send({
+                    status:status,
+                    message:data
+                });
+            }
+            else if(cb == null){
+                res.send({
+                    status:status,
+                    start:data
+                });
+            }
+        })
     });
 
 
