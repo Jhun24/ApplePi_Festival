@@ -271,4 +271,30 @@ function admin(app , startGame){
             }
         });
     });
+
+    app.get('/admin/get/result',(req,res)=>{
+        "use strict";
+        let admin_token = req.session.token;
+        async.waterfall([
+            function (cb) {
+                Admin.find({admin_token:admin_token},(err,model)=>{
+                    if(err) throw err;
+                    if(model.length == 0){
+                        cb(true , 401 , "Unauthorized Token");
+                    }
+                    else{
+                        cb(null);
+                    }
+                })
+            },
+            function (cb) {
+                User.find({},(err,model)=>{
+                    if(err) throw err;
+                    if(model.length == 0){
+
+                    }
+                });
+            }
+        ])
+    });
 }

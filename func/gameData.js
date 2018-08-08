@@ -33,7 +33,7 @@ let data = {
     },
     '박부장':{
         pay:'7천만원',
-        pay_number:700000000,
+        pay_number:70000000,
         department:'인사',
         win_condition:[
             '생존'

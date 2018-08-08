@@ -2,6 +2,7 @@ module.exports = game;
 
 let { User } = require('../DB/schema');
 let async = require('async');
+let Logger = require('../func/color').Logger;
 
 function game(app , startGame){
     app.get('/game/data/:token',(req,res)=>{
@@ -37,36 +38,171 @@ function game(app , startGame){
 
     app.post('/game/fire',(req,res)=>{
         let user_token = req.body.user_token;
-        let oppenent_token = req.body.oppenent_token;
+        let fire_token = req.body.oppenent_token;
 
-        let result_fire = startGame.fire(user_token , oppenent_token);
-        
-        res.send({
-            status:result_fire.status,
-            message:result_fire.message
+        async.waterfall([
+            function(cb){
+                User.find({user_token:user_token},(err,model)=>{
+                    if(err) throw err;
+                    if(model.length == 0){
+                        cb(true , 401 , 'Unauthorized Token');
+                    }
+                    else{
+                        cb(null , model[0]);
+                    }
+                });
+            },
+            function(user , cb){
+                User.find({user_token:fire_token},(err,model)=>{
+                    if(err) throw err;
+                    if(model.length == 0){
+                        cb(true , 401 , "Unauthorized Token");
+                    }
+                    else{
+                        cb(null , user , model[0]);
+                    }
+                });
+            },
+            function(user , fire , cb){
+
+                if(user.game_data.rank < fire.game_data.rank && user.now_room == fire.now_room){
+
+                    if(fire.game_data.name == '김세자'){
+                        startGame.fire_total = startGame.fire_total + user.game_data.pay_number;
+                        User.update({user_token:user.user_token},{$set:{die:true}},(err,model)=>{
+                            if(err) throw err;
+                            cb(null , 200 , "당신이 해고 되었습니다");
+                        });
+                    }
+                    else if(fire.game_data.uniqueness[0] == '노동조합'){
+                        User.find({now_room:fire.now_room},(err,model)=>{
+                            if(err) throw err;
+                            if(model.length == 0){
+                                cb(true , 403 , "Access Denied");
+                            }
+                            else{
+                                let check_alive_nojo = 0;
+                                for(let i = 0; i<model.length; i++){
+                                    if(model[i].game_data.uniqueness[0] == '노동조합' && model[i].die == false){
+                                        check_alive_nojo++;
+                                    }
+                                }
+                                if(startGame.nojo == check_alive_nojo){
+                                    cb(null , 200 , "상대방을 해고 할 수 없습니다");
+                                }
+                                else{
+                                    if(user.game_data.name == '박부장'){
+                                        startGame.bujang_fire_total = startGame.bujang_fire_total + fire.game_data.pay_number;
+                                    }
+                                    else if(user.game_data.name == '이상무'){
+                                        startGame.sanmu_fire_total = startGame.sanmu_fire_total + fire.game_data.pay_number;
+                                    }
+
+                                    startGame.nojo = startGame.nojo - 1;
+                                    startGame.fire_total = startGame.fire_total + fire.game_data.pay_number;
+                                    User.update({user_token:fire.user_token},{$set:{die:true}},(err,model)=>{
+                                        if(err) throw err;
+                                        cb(null , 200 , "상대를 성공적으로 해고 시켰습니다!");
+                                    });
+                                }
+                            }
+                        })
+                    }
+                    else{
+                        if(user.game_data.name == '박부장'){
+                            startGame.bujang_fire_total = startGame.bujang_fire_total + fire.game_data.pay_number;
+                        }
+                        else if(user.game_data.name == '이상무'){
+                            startGame.sanmu_fire_total = startGame.sanmu_fire_total + fire.game_data.pay_number;
+                        }
+
+                        startGame.nojo = startGame.nojo - 1;
+                        startGame.fire_total = startGame.fire_total + fire.game_data.pay_number;
+                        User.update({user_token:fire.user_token},{$set:{die:true}},(err,model)=>{
+                            if(err) throw err;
+                            cb(null , 200 , "상대를 성공적으로 해고 시켰습니다!");
+                        });
+                    }
+                }
+                else{
+                    cb(true , 200 , "상대방을 해고 할 수 없습니다");
+                }
+            }
+        ],function(cb , status , data){
+            if(cb == true || cb == null){
+                res.send({
+                    status:status,
+                    message:data
+                });
+            }
         });
-    });
 
-    app.post('/game/move/check',(req,res)=>{
-        let user_token = req.body.user_token;
-
-        let result_move_check = startGame.move_check(user_token);
-
-        res.send({
-            status:result_move_check.status,
-            message:result_move_check.message
-        });
     });
 
     app.post('/game/move',(req,res)=>{
         let user_token = req.body.user_token;
-        let move_department = req.body.move_department;
+        let part = req.body.move_department;
 
-        let result_move = startGame.move(user_token,move_department);
-        
-        res.send({
-            status:result_move.status,
-            message:result_move.message
+        Logger.info(part);
+
+        async.waterfall([
+            function(cb){
+                if((part == '생산') || (part == '인사') || (part == '영업')){
+                    cb(null);
+                }
+                else{
+                    cb(true , 403 , "접근 부서가 잘못되었습니다");
+                }
+            },
+            function(cb){
+                User.find({user_token:user_token},(err,model)=>{
+                    if(err) throw err;
+                    if(model.length == 0){
+                        cb(true , 401 , "Unauthorized Token");
+                    }
+                    else{
+                        cb(null , model[0]);
+                    }
+                });
+            },
+            function(data ,cb){
+                if(data.game_data.department == '없음'){
+                    cb(null , 0);
+                }
+                else if(data.now_room == "없음"){
+                    cb(null , 0);
+                }
+                else if(data.now_room == data.game_data.department){
+                    cb(null , 0);
+                }
+                else if (data.now_room != data.game_data.department){
+                    cb(null , 1);
+                }
+                else{
+                    cb(true , 500 , "Move Function Error");
+                }
+            },
+            function(code , cb){
+                if(code == 0){
+                    User.update({user_token:user_token},{$set:{now_room:part}},(err,model)=>{
+                        if(err) throw err;
+                        cb(null , 200 , "이동에 성공하셨습니다");
+                    });
+                }
+                else if(code == 1){
+                    cb(null , 200 , "이동이 불가능합니다")
+                }
+                else{
+                    cb(true , 500 , "Move Function Error");
+                }
+            }
+        ],function(cb , status , data){
+            if(cb == true || cb == null){
+                res.send({
+                    status:status,
+                    message:data
+                });
+            }
         });
     });
 
@@ -90,11 +226,11 @@ function game(app , startGame){
                 User.find({},(err,model)=>{
                     if(err) throw err;
                     let user_array = new Array();
-                    for(let i = 0; i<user.length; i++){
+                    for(let i = 0; i<model.length; i++){
                         user_array[i] = new Object();
                         user_array[i] = {
-                            user_name:user[i].user_name,
-                            user_token:user[i].user_token,
+                            user_name:model[i].user_name,
+                            user_token:model[i].user_token,
                             user_profile:'/img/profile.png'
                         }
                     }
@@ -142,11 +278,14 @@ function game(app , startGame){
                         user_list : new Array()
                     }
 
+
                     for(let i = 0; i<model.length; i++){
-                        return_data.user_list[i] = new Object();
-                        return_data.user_list[i] = {
-                            user_name:model[i].user_name,
-                            user_token:model[i].user_token
+                        if(model[i].die == false){
+                            return_data.user_list[i] = new Object();
+                            return_data.user_list[i] = {
+                                user_name:model[i].user_name,
+                                user_token:model[i].user_token
+                            }
                         }
                     }
 
@@ -168,4 +307,6 @@ function game(app , startGame){
              }
         });
     });
+
+
 }
