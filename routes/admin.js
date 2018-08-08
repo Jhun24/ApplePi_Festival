@@ -300,7 +300,6 @@ function admin(app , startGame){
             },
             function (user ,cb) {
                 let check_win_array = new Array();
-
                 for(let i = 0; i<user.length; i++){
                     check_win_array[i] = new Object();
                     check_win_array[i].user_name = user[i].user_name;
@@ -308,8 +307,8 @@ function admin(app , startGame){
                     check_win_array[i].profile = user[i].game_data.profile;
                     check_win_array[i].card = user[i].game_data.card;
 
-                    let game_name = check_win_array.game_name;
-                    if((game_name == '인턴') && (game_name == '김선달') && (game_name == '홍길동') && (game_name == '성춘향') && (game_name == '이몽룡')){
+                    let game_name = check_win_array[i].game_name;
+                    if((game_name == '인턴') || (game_name == '김선달') || (game_name == '홍길동') || (game_name == '성춘향') || (game_name == '이몽룡')){
                         if(user[i].die == false){
                             check_win_array[i].win = true;
                         }
@@ -412,10 +411,8 @@ function admin(app , startGame){
                             }
                         }
                     }
-                    else{
-                        cb(true , 500 , 'Something wrong');
-                    }
                 }
+                console.log(check_win_array);
                 cb(null , 200 , check_win_array);
             }
         ],function (cb , status , data) {
@@ -425,7 +422,7 @@ function admin(app , startGame){
                     message:data
                 });
             }
-            else if(cb == false){
+            else if(cb == null){
                 res.send({
                     status:status,
                     data:data
