@@ -28,6 +28,11 @@ function route(app) {
         });
     });
 
+    app.get('/nimda/admin/watch',(req,res)=>{
+        "use strict";
+        res.render('watch_admin.html');
+    });
+
     app.get('/admin/watch',(req,res)=>{
         "use strict";
         console.log(req.session.token);
