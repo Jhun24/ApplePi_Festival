@@ -22,3 +22,18 @@
 
 # Using
 
+> 1. Git Clone 
+
+    https://github.com/Jhun24/ApplePi_Festival
+
+> 2. Node Module Install
+
+    npm install
+    
+> 3. Update User list
+
+    PATH : /func/user.js
+    
+> 4. Server Start
+
+    node bin/www
