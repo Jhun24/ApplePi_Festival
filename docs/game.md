@@ -149,21 +149,39 @@
     message : Unauthorized Token
         
 
-# GET : /game/check/start/:token
+# GET : /game/check/start
+
+    게임 시작했는지 안했는지 확인 + 현재 라운드 확인 
+    만약에 앱꺼져서 소켓 통신못했을때 쓰는 쿼리임
 
 > Require
 
-    token : 유저 토큰을 의미합니다
+    없다
 
 > Response : Success
 
-    status : 200
-    start : Boolean
-
-    start = true  : Game Start
-    start = false : Waiting
+    status :200
+    data : 알아서 보삼
 
 > Response : Fail
 
-    status : 401
-    message : Unauthorized Token
+    그딴건 없다
+
+
+# Socket
+
+> Connect Url
+
+    서버통신때리는 메인 URL
+
+    EX : 
+    http://aws.soylatte.kr:3000
+
+> room : game_start_check
+
+    게임 시작 체크하는곳
+
+> room : round_start_check
+
+    라운드 시작 체크하는곳
+

@@ -23,6 +23,8 @@ const total_number = document.getElementById('total-number');
 const total_bujang = document.getElementById('total-bujang');
 const total_sangmu = document.getElementById('total-sangmu');
 
+const socket_btn = document.getElementById('set-result');
+
 let intervalFunction;
 let user_name_array = new Array();
 
@@ -31,7 +33,13 @@ let second = 60;
 
 let roulette_array = new Array();
 
-let socket = io();
+let socket = io.connect("http://localhost:3000");
+
+
+socket_btn.addEventListener('click',()=>{
+    console.log(socket);
+    socket.emit('game_start_check',true);
+});
 
 main.addEventListener('click',()=>{
     main_box.style.display = 'flex';
@@ -221,9 +229,6 @@ roulette_btn.addEventListener('click',()=>{
 
                 roulette_array.splice(rand,1);
                 console.log(roulette_array);
-                if(roulette_array.length == 0){
-                    socekt.emit('game_start_check',true);
-                }
             }
             else if(data.status == 401){
                 alert('이미 직군을 선택하셨습니다!');
@@ -233,6 +238,7 @@ roulette_btn.addEventListener('click',()=>{
             console.log(err);
         }
     });
+
 
 });
 

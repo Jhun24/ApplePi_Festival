@@ -67,6 +67,9 @@ function game(app , startGame , io){
                     }
                 });
             }
+            else{
+                socket.broadcast.emit('round_start_check',false);
+            }
         });
     });
 
@@ -379,5 +382,14 @@ function game(app , startGame , io){
     });
 
 
+    app.get('/game/check/start',(req,res)=>{
+        Check.find({},(err,model)=>{
+            if(err) throw err;
+            res.send({
+                status:200,
+                data:model
+            });
+        });
+    })
 
 }

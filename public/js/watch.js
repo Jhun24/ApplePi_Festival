@@ -2,7 +2,7 @@
  * Created by janghunlee on 2018. 8. 8..
  */
 window.onload = function () {
-    let socket = io();
+    let socket = io.connect("http://localhost:3000");
 
     socket.on('game_start_check',(data)=>{
         console.log('game_start_check' + data);
