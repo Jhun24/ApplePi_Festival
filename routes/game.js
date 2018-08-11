@@ -175,8 +175,11 @@ function game(app , startGame){
                 else if(data.now_room == data.game_data.department){
                     cb(null , 0);
                 }
-                else if (data.now_room != data.game_data.department){
+                else if (data.now_room != data.game_data.department && data.game_data.department != part){
                     cb(null , 1);
+                }
+                else if(data.now_room != data.game_data.department && data.game_data.department == part){
+                    cb(null , 0);
                 }
                 else{
                     cb(true , 500 , "Move Function Error");
