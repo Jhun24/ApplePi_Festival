@@ -2,6 +2,15 @@
  * Created by janghunlee on 2018. 8. 8..
  */
 window.onload = function () {
+    let socket = io();
+
+    socket.on('game_start_check',(data)=>{
+        console.log('game_start_check' + data);
+    });
+
+    socket.on('round_start_check',(data)=>{
+        console.log('round start check : '+data)
+    });
     $.ajax({
         method:'GET',
         url:'/admin/get/result',

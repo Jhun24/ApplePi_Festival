@@ -48,15 +48,43 @@ let Peek = new mongoose.Schema({
     card_url:String,
 });
 
+let Start_Check = new mongoose.Schema({
+    game:Boolean,
+    round_one:Boolean,
+    round_two:Boolean,
+    round_three:Boolean,
+    round_four:Boolean,
+    now_round: String 
+});
+
 let peekModel = mongoose.model('peekModel',Peek);
 let adminModel = mongoose.model('adminModel',Admin);
 let userModel = mongoose.model('userModel',User);
 let logModel = mongoose.model('logModel',Log);
+let checkModel = mongoose.model('checkModel',Start_Check);
 
 let setAdmin = new adminModel({
     admin_token: random_string.generate(),
     id:'ApplePi',
     password:'edcan'
+});
+
+let startCheck = new checkModel({
+    game:false,
+    round_one:false,
+    round_two:false,
+    round_three:false,
+    round_four:false,
+    now_round : 'game',
+});
+
+checkModel.find({},(err,model)=>{
+    if(err) throw err;
+    if(model.length == 0){
+        startCheck.save((err,model)=>{
+            if(err) throw err;
+        });
+    }
 });
 
 adminModel.find({},(err,model)=>{
@@ -103,3 +131,4 @@ exports.User = userModel;
 exports.Admin = adminModel;
 exports.Log = logModel;
 exports.Peek = peekModel;
+exports.Check = checkModel;

@@ -31,6 +31,8 @@ let second = 60;
 
 let roulette_array = new Array();
 
+let socket = io();
+
 main.addEventListener('click',()=>{
     main_box.style.display = 'flex';
     peek_box.style.display = 'none';
@@ -219,6 +221,9 @@ roulette_btn.addEventListener('click',()=>{
 
                 roulette_array.splice(rand,1);
                 console.log(roulette_array);
+                if(roulette_array.length == 0){
+                    socekt.emit('game_start_check',true);
+                }
             }
             else if(data.status == 401){
                 alert('이미 직군을 선택하셨습니다!');
@@ -233,10 +238,12 @@ roulette_btn.addEventListener('click',()=>{
 
 time_timer.addEventListener('click',()=>{
     intervalFunction = setInterval(timer,1000);
+    socket.emit('round_start_check',true);
 });
 
 timer_stop.addEventListener('click',()=>{
     clearInterval(intervalFunction);
+    socket.emit('round_start_check',false);
 });
 
 timer_refresth.addEventListener('click',()=>{

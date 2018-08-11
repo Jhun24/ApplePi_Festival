@@ -1,10 +1,77 @@
 module.exports = game;
 
-let { User } = require('../DB/schema');
+let { User , Check } = require('../DB/schema');
 let async = require('async');               
 let Logger = require('../func/color').Logger;
 
-function game(app , startGame){
+function game(app , startGame , io){
+    io.sockets.on('connection',(socket)=>{
+        socket.on('game_start_check',(data)=>{
+            Logger.info('game_start_check : '+data);
+            Check.update({},{$set:{game:true}},(err,model)=>{
+                if(err) throw err;
+                socket.broadcast.emit('game_start_check',true);
+            });
+
+        });
+
+        socket.on('round_start_check',(data)=>{
+            Logger.info('round start message '+data);
+            if(data == true){
+                Check.find({},(err,model)=>{
+                    if(err) throw err;
+                    if(model.length == 0){
+                        socket.broadcast.emit('round_start_check',500);
+                    }
+                    else{
+                        let check_data = model[0];
+
+                        if(check_data.game == true){   
+                            if(check_data.round_one == true){
+                                if(check_data.round_two == true){
+                                    if(check_data.round_three == true){
+                                        if(check_data.round_one == true){
+                                            socket.broadcast.emit('round_start_check','Game Finish');
+                                        }
+                                        else{
+                                            Check.update({},{$set:{round_one:true}},(err,model)=>{
+                                                if(err) throw err;
+                                                socket.broadcast.emit('round_start_check',true);
+                                            });
+                                        }
+                                    }
+                                    else{
+                                        Check.update({},{$set:{round_three:true}},(err,model)=>{
+                                            if(err) throw err;
+                                            socket.broadcast.emit('round_start_check',true);
+                                        });
+                                    }
+                                }
+                                else{
+                                    Check.update({},{$set:{round_two:true}},(err,model)=>{
+                                        if(err) throw err;
+                                        socket.broadcast.emit('round_start_check',true);
+                                    });
+                                }
+                            }
+                            else{
+                                Check.update({},{$set:{round_one:true}},(err,model)=>{
+                                    if(err) throw err;
+                                    socket.broadcast.emit('round_start_check',true);
+                                });
+                            }
+                        }
+                        else{
+                            socket.broadcast.emit('round_start_check',500);
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+
+
     app.get('/game/data/:token',(req,res)=>{
         let token = req.params.token;
         
@@ -311,59 +378,6 @@ function game(app , startGame){
         });
     });
 
-    app.get('/game/check/start/:token',(req,res)=>{
-        let user_token = req.params.token;
-
-        async.waterfall([
-            function(cb){
-                User.find({user_token:user_token},(err,model)=>{
-                    if(err) throw err;
-                    if(model.length == 0){
-                        cb(true , 401 , "Unauthorized Token");
-                    }
-                    else{
-                        cb(null);
-                    }
-                });
-            },
-            function(cb){
-                User.find({},(err,model)=>{
-                    if(err) throw err;
-                    cb(null , model);
-                });
-            },
-            function(user ,cb){
-                let check_user = 0;
-                for(let i = 0; i<user.length; i++){
-                    if(user[i].setting){
-                        check_user++;
-                    }
-                }
-                cb(null , check_user);
-            },
-            function(count , cb){
-                if(count == 11){
-                    cb(null , 200 , true);
-                }
-                else{
-                    cb(null , 200 , false);
-                }
-            }
-        ],function(cb , status , data){
-            if(cb == true){
-                res.send({
-                    status:status,
-                    message:data
-                });
-            }
-            else if(cb == null){
-                res.send({
-                    status:status,
-                    start:data
-                });
-            }
-        })
-    });
 
 
 }

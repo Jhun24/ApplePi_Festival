@@ -10,8 +10,10 @@ let session = require('express-session');
 
 let startGame = new Game();
 
-
 var app = express();
+
+let server = require('http').createServer(app);
+let io = require('socket.io')(server);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -31,7 +33,7 @@ app.use(session({
     saveUninitialized:true
 }));
 
-require('./routes/game')(app , startGame);
+require('./routes/game')(app , startGame , io);
 require('./routes/admin')(app, startGame);
 require('./routes/watch')(app , startGame);
 require('./routes/route')(app);
@@ -51,6 +53,10 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+});
+
+server.listen(3000, function() {
+  Logger.info('Server listening on port 3000');
 });
 
 module.exports = app;
