@@ -141,7 +141,7 @@ function game(app , startGame , io){
                         startGame.fire_total = startGame.fire_total + user.game_data.pay_number;
                         User.update({user_token:user.user_token},{$set:{die:true}},(err,model)=>{
                             if(err) throw err;
-                            cb(null , 200 , "당신이 해고 되었습니다");
+                            cb(null , 200 , "당신이 해고 되었습니다" , user.user_name);
                         });
                     }
                     else if(fire.game_data.uniqueness[0] == '노동조합'){
@@ -172,7 +172,7 @@ function game(app , startGame , io){
                                     startGame.fire_total = startGame.fire_total + fire.game_data.pay_number;
                                     User.update({user_token:fire.user_token},{$set:{die:true}},(err,model)=>{
                                         if(err) throw err;
-                                        cb(null , 200 , "상대를 성공적으로 해고 시켰습니다!");
+                                        cb(null , 200 , "상대를 성공적으로 해고 시켰습니다!" , fire.user_name);
                                     });
                                 }
                             }
@@ -190,7 +190,8 @@ function game(app , startGame , io){
                         startGame.fire_total = startGame.fire_total + fire.game_data.pay_number;
                         User.update({user_token:fire.user_token},{$set:{die:true}},(err,model)=>{
                             if(err) throw err;
-                            cb(null , 200 , "상대를 성공적으로 해고 시켰습니다!");
+
+                            cb(null , 200 , "상대를 성공적으로 해고 시켰습니다!" , fire.user_name);
                         });
                     }
                 }
@@ -198,8 +199,15 @@ function game(app , startGame , io){
                     cb(true , 200 , "상대방을 해고 할 수 없습니다");
                 }
             }
-        ],function(cb , status , data){
+        ],function(cb , status , data , user_name){
             if(cb == true || cb == null){
+                if((data == '상대를 성공적으로 해고 시켰습니다!') || (data == '당신이 해고 되었습니다')){
+                    Logger.info('Socket Start');
+                    io.sockets.on('connection',(socket)=>{
+                        Logger.info('socket gigi');
+                        socket.emit('fire',user_name);
+                    });
+                }
                 res.send({
                     status:status,
                     message:data

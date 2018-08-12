@@ -11,6 +11,10 @@ window.onload = function () {
     socket.on('round_start_check',(data)=>{
         console.log('round start check : '+data)
     });
+
+    socket.on('fire',(data)=>{
+        console.log(data+' 님이 해고됬습니다');
+    });
     $.ajax({
         method:'GET',
         url:'/admin/get/result',
