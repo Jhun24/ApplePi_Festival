@@ -16,15 +16,7 @@ window.onload = function () {
         console.log(data+' 님이 해고됬습니다');
     });
 
-    socket.on('영업',(data)=>{
-        console.log(data);
-    });
-
-    socket.on('인사',(data)=>{
-        console.log(data);
-    });
-
-    socket.on('생산',(data)=>{
+    socket.on('department',(data)=>{
         console.log(data);
     });
     $.ajax({
