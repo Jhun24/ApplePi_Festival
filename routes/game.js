@@ -283,6 +283,8 @@ function game(app , startGame , io){
             if(cb == true || cb == null){
                 if(data == "이동에 성공하셨습니다"){
                     io.sockets.on('connection',(socket)=>{
+                        Logger.info(part);
+                        Logger.info(user_name);
                         socket.emit('department',{
                             department:part,
                             message:'['+part+'] '+user_name+'님이 들어왔습니다'
