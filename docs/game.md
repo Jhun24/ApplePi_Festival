@@ -166,7 +166,24 @@
 > Response : Fail
 
     그딴건 없다
+    
+# GET : /game/check/refresh
 
+    /game/check/start 초기화
+
+> Require
+
+    없따
+
+> Response : Success
+
+    status : 200
+    message : Refresh Success
+
+> Response : Fail
+
+    status:404
+    message: Please Start Game
 
 # Socket
 

@@ -21,7 +21,7 @@ function game(app , startGame , io){
                 Check.find({},(err,model)=>{
                     if(err) throw err;
                     if(model.length == 0){
-                        socket.broadcast.emit('round_start_check',500);
+                        socket.broadcast.emit('round_start_check',404);
                     }
                     else{
                         let check_data = model[0];
@@ -30,39 +30,39 @@ function game(app , startGame , io){
                             if(check_data.round_one == true){
                                 if(check_data.round_two == true){
                                     if(check_data.round_three == true){
-                                        if(check_data.round_one == true){
+                                        if(check_data.round_four == true){
                                             socket.broadcast.emit('round_start_check','Game Finish');
                                         }
                                         else{
-                                            Check.update({},{$set:{round_one:true}},(err,model)=>{
+                                            Check.update({},{$set:{round_four:true,now_round:'round_four'}},(err,model)=>{
                                                 if(err) throw err;
                                                 socket.broadcast.emit('round_start_check',true);
                                             });
                                         }
                                     }
                                     else{
-                                        Check.update({},{$set:{round_three:true}},(err,model)=>{
+                                        Check.update({},{$set:{round_three:true,now_round:'round_three'}},(err,model)=>{
                                             if(err) throw err;
                                             socket.broadcast.emit('round_start_check',true);
                                         });
                                     }
                                 }
                                 else{
-                                    Check.update({},{$set:{round_two:true}},(err,model)=>{
+                                    Check.update({},{$set:{round_two:true,now_round:'round_two'}},(err,model)=>{
                                         if(err) throw err;
                                         socket.broadcast.emit('round_start_check',true);
                                     });
                                 }
                             }
                             else{
-                                Check.update({},{$set:{round_one:true}},(err,model)=>{
+                                Check.update({},{$set:{round_one:true , now_round:'round_one'}},(err,model)=>{
                                     if(err) throw err;
                                     socket.broadcast.emit('round_start_check',true);
                                 });
                             }
                         }
                         else{
-                            socket.broadcast.emit('round_start_check',500);
+                            socket.broadcast.emit('round_start_check',"Please Start Game");
                         }
                     }
                 });
@@ -399,5 +399,38 @@ function game(app , startGame , io){
             });
         });
     })
+
+    app.get('/game/check/refresh',(req,res)=>{
+        Check.find({game:true},(err,model)=>{
+            if(err) throw err;
+            if(model.length == 0){
+                res.send({
+                    status:404,
+                    message:"Please Start game"
+                })
+            }
+            else{
+                Check.remove({game:true},(err,model)=>{
+                    if(err) throw err;
+                    let saveCheck = new Check({
+                        game:true,
+                        round_one:false,
+                        round_two:false,
+                        round_three:false,
+                        round_four:false,
+                        now_round : 'round_one',
+                    });
+        
+                    saveCheck.save((err,model)=>{
+                        if(err) throw err;
+                        res.send({
+                            status:200,
+                            message:"Refresh Success"
+                        }) 
+                    });
+                });
+            }
+        });
+    });
 
 }
