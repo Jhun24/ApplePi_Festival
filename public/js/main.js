@@ -33,7 +33,7 @@ let second = 60;
 
 let roulette_array = new Array();
 
-let socket = io.connect("http://localhost:3000");
+let socket = io.connect('http://aws.soylatte.kr:3000');
 
 
 socket_btn.addEventListener('click',()=>{
