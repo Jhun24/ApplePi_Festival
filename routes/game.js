@@ -220,6 +220,7 @@ function game(app , startGame , io){
     app.post('/game/move',(req,res)=>{
         let user_token = req.body.user_token;
         let part = req.body.move_department;
+        let user_name = ''
 
         Logger.info(part);
 
@@ -239,6 +240,7 @@ function game(app , startGame , io){
                         cb(true , 401 , "Unauthorized Token");
                     }
                     else{
+                        user_name = model[0].user_name;
                         cb(null , model[0]);
                     }
                 });
@@ -279,6 +281,11 @@ function game(app , startGame , io){
             }
         ],function(cb , status , data){
             if(cb == true || cb == null){
+                if(data == "이동에 성공하셨습니다"){
+                    io.sockets.on('connection',(socket)=>{
+                        socket.emit(part,'['+part+'] '+user_name+'님이 들어왔습니다');
+                    });
+                }
                 res.send({
                     status:status,
                     message:data
