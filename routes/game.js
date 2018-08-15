@@ -71,8 +71,6 @@ function game(app , startGame , io){
                 socket.broadcast.emit('round_start_check',false);
             }
         });
-    });
-
 
 
     app.get('/game/data/:token',(req,res)=>{
@@ -203,10 +201,10 @@ function game(app , startGame , io){
             if(cb == true || cb == null){
                 if((data == '상대를 성공적으로 해고 시켰습니다!') || (data == '당신이 해고 되었습니다')){
                     Logger.info('Socket Start');
-                    io.sockets.on('connection',(socket)=>{
-                        Logger.info('socket gigi');
-                        socket.emit('fire',user_name);
-                    });
+                 
+                    Logger.info('socket gigi');
+                    socket.emit('fire',user_name);
+            
                 }
                 res.send({
                     status:status,
@@ -282,13 +280,11 @@ function game(app , startGame , io){
         ],function(cb , status , data){
             if(cb == true || cb == null){
                 if(data == "이동에 성공하셨습니다"){
-                    io.sockets.on('connection',(socket)=>{
-                        Logger.info(part);
-                        Logger.info(user_name);
-                        socket.emit('department',{
-                            department:part,
-                            message:'['+part+'] '+user_name+'님이 들어왔습니다'
-                        });
+                    Logger.info(part);
+                    Logger.info(user_name);
+                    socket.emit('department',{
+                        department:part,
+                        message:'['+part+'] '+user_name+'님이 들어왔습니다'
                     });
                 }
                 res.send({
@@ -444,5 +440,5 @@ function game(app , startGame , io){
             }
         });
     });
-
+    });
 }
