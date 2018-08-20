@@ -408,8 +408,8 @@ function game(app , startGame , io){
                 let i = 0;
 
                 async.during(
-                    function(cb){
-                        i < model.length
+                    function(){
+                        return i < model.length
                     },
                     function(cb){
                         console.log(i);
