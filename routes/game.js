@@ -412,6 +412,8 @@ function game(app , startGame , io){
                         i < model.length
                     },
                     function(cb){
+                        console.log(i);
+                        conosle.log(model[i]);
                         if(model[i].die == true){
                             fire_member = new Object();
                             fire_member = model[i];
