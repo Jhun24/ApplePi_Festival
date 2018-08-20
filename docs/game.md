@@ -185,6 +185,22 @@
     status:404
     message: Please Start Game
 
+# GET : /game/fire/user/list
+
+> Require
+
+    없따
+
+> Response : Success
+
+    status : 200
+    data : User data List
+
+> Response : Fail
+
+     status : 404
+     message : Please Start Game
+
 # Socket
 
 > Connect Url
@@ -201,14 +217,3 @@
 > room : round_start_check
 
     라운드 시작 체크하는곳
-
-> room : fire
-
-    해고되면 누구 해고됬다고 이름 날라옴
-
-> room : department
-
-    방접속 체크
-
-    department:부서이름
-    message : 메세지

@@ -394,7 +394,7 @@ function game(app , startGame , io){
             });
         });
     });
-    app.get('/game/fire/user',(req,res)=>{
+    app.get('/game/fire/user/list',(req,res)=>{
         async.waterfall([
             function(cb){
                 User.find({},(err,model)=>{
