@@ -396,7 +396,7 @@ function game(app , startGame , io){
     });
     app.get('/game/fire/user/list',(req,res)=>{
         console.log('hi');
-        User.find({},(err,model)=>{
+        User.find({die:true},(err,model)=>{
             if(err) throw err;
             if(model.length == 0){
                 res.send({
@@ -405,35 +405,10 @@ function game(app , startGame , io){
                 });
             }
             else{
-                console.log("hello")
-                let fire_member = new Array();
-                let i = 0;
-
-                async.whilst(
-                    function(){
-                        return i < model.length
-                    },
-                    function(cb){
-                        console.log(i);
-                        console.log(model[i]);
-                        if(model[i].die == true){
-                            fire_member = new Object();
-                            fire_member = model[i];
-                            i++;
-                            cb(null);
-                        }
-                        else{
-                            i++;
-                        }
-                    },
-                    function(err){   
-                        if(err) throw err;
-                        res.send({
-                            status:200,
-                            data:fire_member
-                        });
-                    }
-                );
+                res.send({
+                    status:200,
+                    data:model
+                });
             }
         });
         
