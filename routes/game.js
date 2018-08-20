@@ -201,13 +201,6 @@ function game(app , startGame , io){
             }
         ],function(cb , status , data , user_name){
             if(cb == true || cb == null){
-                if((data == '상대를 성공적으로 해고 시켰습니다!') || (data == '당신이 해고 되었습니다')){
-                    Logger.info('Socket Start');
-                    io.sockets.on('connection',(socket)=>{
-                        Logger.info('socket gigi');
-                        socket.emit('fire',user_name);
-                    });
-                }
                 res.send({
                     status:status,
                     message:data
@@ -281,16 +274,6 @@ function game(app , startGame , io){
             }
         ],function(cb , status , data){
             if(cb == true || cb == null){
-                if(data == "이동에 성공하셨습니다"){
-                    io.sockets.on('connection',(socket)=>{
-                        Logger.info(part);
-                        Logger.info(user_name);
-                        socket.emit('department',{
-                            department:part,
-                            message:'['+part+'] '+user_name+'님이 들어왔습니다'
-                        });
-                    });
-                }
                 res.send({
                     status:status,
                     message:data
@@ -410,7 +393,47 @@ function game(app , startGame , io){
                 data:model
             });
         });
-    })
+    });
+    app.get('/game/fire/user',(req,res)=>{
+        async.waterfall([
+            function(cb){
+                User.find({},(err,model)=>{
+                    if(err) throw err;
+                    if(model.length == 0){
+                       cb(true , 404 , "Please Start Game")
+                    }
+                    else{
+                        cb(null , model);
+                    }
+                });
+            },
+            function(cb){
+                let fire_member = new Array();
+                for(let i = 0; i<model.length; i++){
+                    if(model[i].die == true){
+                        fire_member = new Object();
+                        fire_member = model[i];
+                    }
+                }
+
+                cb(null , 200 , fire_member);
+            }
+        ],function(cb,status,data){
+            if(cb == true){
+                res.send({
+                    status:status,
+                    message:data
+                });
+            }
+            else if(cb == null){
+                res.send({
+                    status:status,
+                    data:data
+                });
+            }
+        });
+        
+    });
 
     app.get('/game/check/refresh',(req,res)=>{
         Check.find({game:true},(err,model)=>{
