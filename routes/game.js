@@ -420,7 +420,8 @@ function game(app , startGame , io){
                             cb(null);
                         }
                     },
-                    function(err , response){   
+                    function(err){   
+                        if(err) throw err;
                         res.send({
                             status:200,
                             data:fire_member
