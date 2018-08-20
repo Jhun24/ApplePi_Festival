@@ -341,6 +341,7 @@ function game(app , startGame , io){
                         cb(true , 401 , "Unauthorized Token");
                     }
                     else{
+                        console.log(model[0].now_room);
                         cb(null , model[0].now_room);
                     }
                 });
@@ -354,7 +355,8 @@ function game(app , startGame , io){
                         user_list : new Array()
                     }
 
-
+                    console.log(model);
+                    console.log(return_data);
                     for(let i = 0; i<model.length; i++){
                         if(model[i].die == false){
                             return_data.user_list[i] = new Object();
@@ -364,6 +366,7 @@ function game(app , startGame , io){
                             }
                         }
                     }
+                    console.log(return_data);
 
                     cb(null , 200 , return_data);
                 });
