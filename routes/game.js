@@ -409,16 +409,22 @@ function game(app , startGame , io){
             },
             function(model , cb){
                 let fire_member = new Array();
-                setTimeout(function(){
-                    for(let i = 0; i<model.length; i++){
+                let i = 0;
+
+                async.during(
+                    function(cb){
+                        count < model.length
+                    },
+                    function(cb){
                         if(model[i].die == true){
                             fire_member = new Object();
                             fire_member = model[i];
                         }
+                    },
+                    function(err , res){
+                        cb(null , 200 , fire_member);
                     }
-                }, 1000);
-
-                cb(null , 200 , fire_member);
+                )
             
             }
         ],function(cb,status,data){
