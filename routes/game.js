@@ -419,6 +419,7 @@ function game(app , startGame , io){
                         if(model[i].die == true){
                             fire_member = new Object();
                             fire_member = model[i];
+                            i++;
                             cb(null);
                         }
                     },
