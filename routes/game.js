@@ -409,14 +409,17 @@ function game(app , startGame , io){
             },
             function(model , cb){
                 let fire_member = new Array();
-                for(let i = 0; i<model.length; i++){
-                    if(model[i].die == true){
-                        fire_member = new Object();
-                        fire_member = model[i];
+                setTimeout(function(){
+                    for(let i = 0; i<model.length; i++){
+                        if(model[i].die == true){
+                            fire_member = new Object();
+                            fire_member = model[i];
+                        }
                     }
-                }
+                }, 1000);
 
                 cb(null , 200 , fire_member);
+            
             }
         ],function(cb,status,data){
             if(cb == true){
