@@ -395,6 +395,7 @@ function game(app , startGame , io){
         });
     });
     app.get('/game/fire/user/list',(req,res)=>{
+        console.log('hi');
         User.find({},(err,model)=>{
             if(err) throw err;
             if(model.length == 0){
@@ -404,10 +405,11 @@ function game(app , startGame , io){
                 });
             }
             else{
+                console.log("hello")
                 let fire_member = new Array();
                 let i = 0;
 
-                async.during(
+                async.whilst(
                     function(){
                         return i < model.length
                     },
