@@ -407,7 +407,7 @@ function game(app , startGame , io){
                     }
                 });
             },
-            function(cb){
+            function(model , cb){
                 let fire_member = new Array();
                 for(let i = 0; i<model.length; i++){
                     if(model[i].die == true){
