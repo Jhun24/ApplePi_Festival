@@ -422,6 +422,9 @@ function game(app , startGame , io){
                             i++;
                             cb(null);
                         }
+                        else{
+                            i++;
+                        }
                     },
                     function(err){   
                         if(err) throw err;
