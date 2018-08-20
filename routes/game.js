@@ -413,7 +413,7 @@ function game(app , startGame , io){
 
                 async.during(
                     function(cb){
-                        count < model.length
+                        i < model.length
                     },
                     function(cb){
                         if(model[i].die == true){
