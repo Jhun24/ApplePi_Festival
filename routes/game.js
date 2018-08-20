@@ -395,19 +395,15 @@ function game(app , startGame , io){
         });
     });
     app.get('/game/fire/user/list',(req,res)=>{
-        async.waterfall([
-            function(cb){
-                User.find({},(err,model)=>{
-                    if(err) throw err;
-                    if(model.length == 0){
-                       cb(true , 404 , "Please Start Game")
-                    }
-                    else{
-                        cb(null , model);
-                    }
+        User.find({},(err,model)=>{
+            if(err) throw err;
+            if(model.length == 0){
+                res.send({
+                    status:404,
+                    message:"Game Data Not Found"
                 });
-            },
-            function(model , cb){
+            }
+            else{
                 let fire_member = new Array();
                 let i = 0;
 
@@ -421,24 +417,13 @@ function game(app , startGame , io){
                             fire_member = model[i];
                         }
                     },
-                    function(err , res){
-                        cb(null , 200 , fire_member);
+                    function(err , response){   
+                        res.send({
+                            status:200,
+                            data:fire_member
+                        });
                     }
-                )
-            
-            }
-        ],function(cb,status,data){
-            if(cb == true){
-                res.send({
-                    status:status,
-                    message:data
-                });
-            }
-            else if(cb == null){
-                res.send({
-                    status:status,
-                    data:data
-                });
+                );
             }
         });
         
