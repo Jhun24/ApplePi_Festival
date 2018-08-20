@@ -31,7 +31,7 @@ function game(app , startGame , io){
                                 if(check_data.round_two == true){
                                     if(check_data.round_three == true){
                                         if(check_data.round_four == true){
-                                            socket.broadcast.emit('round_start_check','Game Finish');
+                                            socket.broadcast.emit('round_start_check',true);
                                         }
                                         else{
                                             Check.update({},{$set:{round_four:true,now_round:'round_four'}},(err,model)=>{
@@ -62,7 +62,7 @@ function game(app , startGame , io){
                             }
                         }
                         else{
-                            socket.broadcast.emit('round_start_check',"Please Start Game");
+                            socket.broadcast.emit('round_start_check',false);
                         }
                     }
                 });
