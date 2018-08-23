@@ -49,4 +49,16 @@ function route(app) {
             }
         });
     });
+
+    app.get('/',(req,res)=>{
+        res.render("index.html");
+    });
+
+    app.get('/card',(req,res)=>{
+        res.render('card.html');
+    });
+
+    app.get('/main/room',(req,res)=>{
+        res.render('main_room.html');
+    });
 }

@@ -1,0 +1,116 @@
+@import "flex.less";
+
+body{
+    overflow: hidden;
+    background-color:rgb(230,230,230);
+}
+
+form {
+    width: 100vw;
+    height: 100vh;
+
+    .flex-center;
+}
+
+.main-box{
+    width:80%;
+    height:90%;
+}
+
+.main-box > .data-box{
+    width:100%;
+    height:80%;
+
+    background-color: #fff;
+}
+
+.main-box > .data-box > p{
+    text-align: center;
+    line-height:80px;
+    font-size:28px;
+    font-weight:200;
+
+    color:rgb(79,79,79);
+}
+
+.main-box > .data-box > .img-box{
+    width:100%;
+    height:50%;
+
+    .flex-center;
+}
+
+.main-box > .data-box > .img-box > label{
+    width:200.5px;
+    height:242.5px;
+
+    margin:auto;
+}
+
+.main-box > .data-box > .img-box > label > img{
+    width:200.5px;
+    height:242.5px;
+}
+
+.main-box > .data-box > .img-box > input{
+    display: none;
+}
+
+.main-box > .data-box > .token-box{
+    width:100%;
+    height:calc(~"50% - 80px");
+
+    .flex-center;
+}
+
+.main-box > .data-box > .token-box > input{
+    width:200.5px;
+    height:40px;
+
+    border:none;
+    border-bottom:2px solid rgb(182,182,182);
+
+    outline:none;
+
+    font-size:14px;
+    font-weight:200;
+}
+
+::-webkit-input-placeholder {
+    text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+    text-align: center;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+    text-align: center;
+}
+
+:-ms-input-placeholder {
+    text-align: center;
+}
+
+.main-box > input{
+    width:100%;
+    height:7%;
+
+    background-color: rgb(142,142,142);
+
+    .flex-center;
+
+    margin-top:30px;
+    border:none;
+    border-radius:50px;
+
+    font-size:20px;
+    font-weight:200;
+    color:rgb(79,79,79);
+
+    outline:none;
+
+    -webkit-box-shadow: 5px 5px 5px grey;
+    -moz-box-shadow: 5px 5px 5px grey;
+    box-shadow: 5px 5px 5px grey;
+}
