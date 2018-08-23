@@ -61,4 +61,8 @@ function route(app) {
     app.get('/main/room',(req,res)=>{
         res.render('main_room.html');
     });
+
+    app.get('/main/game',(req,res)=>{
+        res.render('game_room.html');
+    });
 }
